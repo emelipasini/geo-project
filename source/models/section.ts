@@ -6,6 +6,8 @@ class Section {
     alt_izqfin: number;
     alt_derfin: number;
     geom: string;
+    fecha_alta: Date;
+    fecha_baja: Date;
 
     constructor(
         id_tramo: number,
@@ -14,7 +16,9 @@ class Section {
         alt_derini: number,
         alt_izqfin: number,
         alt_derfin: number,
-        geom: string
+        geom: string,
+        fecha_alta: Date,
+        fecha_baja: Date
     ) {
         this.id_tramo = id_tramo;
         this.id_via = id_via;
@@ -23,6 +27,8 @@ class Section {
         this.alt_izqfin = alt_izqfin;
         this.alt_derfin = alt_derfin;
         this.geom = geom;
+        this.fecha_alta = fecha_alta;
+        this.fecha_baja = fecha_baja;
     }
 }
 
