@@ -1,0 +1,41 @@
+{
+    "name": "geo-project",
+    "version": "1.0.0",
+    "description": "A TypeScript-based GraphQL server integrated with Apollo, utilizing a JSON server API for handling geographical data.",
+    "main": "dist/server.js",
+    "type": "module",
+    "scripts": {
+        "start": "node ./dist/server.js",
+        "dev": "node --watch ./dist/server.js",
+        "debug": "node dist/server.js --inspect",
+        "build": "rm -rf ./dist && tsc",
+        "json-server": "json-server --watch ./source/database/db.json --port 3001"
+    },
+    "engines": {
+        "npm": ">=9.5.1",
+        "node": ">=18.16.0"
+    },
+    "keywords": [
+        "typescript",
+        "node",
+        "graphql",
+        "apollo"
+    ],
+    "author": "emelipasini",
+    "license": "MIT",
+    "dependencies": {
+        "@apollo/server": "^4.7.2",
+        "axios": "^1.4.0",
+        "dotenv": "^16.1.4",
+        "graphql": "^16.6.0",
+        "graphql-tag": "^2.12.6",
+        "json-server": "^0.17.3",
+        "typescript": "^5.1.3",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "@types/json-server": "^0.14.4",
+        "@types/node": "^20.2.5",
+        "@types/uuid": "^9.0.1"
+    }
+}
