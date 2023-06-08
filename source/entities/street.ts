@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-import { getStreets, getAllStreets } from "../services/street-service.js";
+import { getActiveStreets, getStreets } from "../services/street-service.js";
 
 import Street from "../models/street.js";
 
@@ -20,13 +20,14 @@ export const typeDefs = gql`
         nombre_oficial: String!
         fecha_alta: String!
         fecha_baja: String
+        tramos: [Section]
     }
 `;
 
 export const resolvers = {
     Query: {
         activeStreetsCount: async () => {
-            const streets = await getStreets();
+            const streets = await getActiveStreets();
             return streets.length;
         },
         street: async (root: any, args: any) => {
@@ -37,9 +38,9 @@ export const resolvers = {
             let streets: Street[];
 
             if (args.deleted) {
-                streets = await getAllStreets();
-            } else {
                 streets = await getStreets();
+            } else {
+                streets = await getActiveStreets();
             }
 
             return streets;
