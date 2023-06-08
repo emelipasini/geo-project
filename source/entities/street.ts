@@ -30,11 +30,11 @@ export const resolvers = {
             const streets = await getActiveStreets();
             return streets.length;
         },
-        street: async (root: any, args: any) => {
+        street: async (_: Street, args: { id_via: number }) => {
             const streets = await getStreets();
-            return streets.find((street: any) => street.id_via === args.id_via);
+            return streets.find((street: Street) => street.id_via === args.id_via);
         },
-        streets: async (root: any, args: any) => {
+        streets: async (_: Street, args: { deleted?: string }) => {
             let streets: Street[];
 
             if (args.deleted) {
@@ -47,11 +47,11 @@ export const resolvers = {
         },
     },
     Street: {
-        fecha_alta: (parent: any) => {
+        fecha_alta: (parent: Street) => {
             const date = new Date(parent.fecha_alta);
             return date.toLocaleString().replace(",", "");
         },
-        fecha_baja: (parent: any) => {
+        fecha_baja: (parent: Street) => {
             if (parent.fecha_baja) {
                 const date = new Date(parent.fecha_baja);
                 return date.toLocaleString().replace(",", "");

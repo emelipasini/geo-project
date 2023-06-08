@@ -37,15 +37,15 @@ export const resolvers = {
             const sections = await getActiveSections();
             return sections.length;
         },
-        section: async (_root: Section, args: Section) => {
+        section: async (_: Section, args: { id_tramo: number }) => {
             const sections = await getSections();
-            return sections.find((section: any) => section.id_tramo === args.id_tramo);
+            return sections.find((section: Section) => section.id_tramo === args.id_tramo);
         },
-        sectionsByStreet: async (root: Section, args: Section) => {
+        sectionsByStreet: async (_: Section, args: { id_via: number }) => {
             const sections = await getSections();
-            return sections.filter((section: any) => section.id_via.id_via === args.id_via);
+            return sections.filter((section: Section) => (section.id_via as unknown as Section).id_via === args.id_via);
         },
-        sections: async (root: Section, args: any) => {
+        sections: async (_: Section, args: { deleted?: string }) => {
             let sections: Section[];
 
             if (args.deleted) {
@@ -58,17 +58,17 @@ export const resolvers = {
         },
     },
     Section: {
-        altura_izquierda: (parent: any) => {
+        altura_izquierda: (parent: Section) => {
             return `${parent.alt_izqini} - ${parent.alt_izqfin}`;
         },
-        altura_derecha: (parent: any) => {
+        altura_derecha: (parent: Section) => {
             return `${parent.alt_derini} - ${parent.alt_derfin}`;
         },
-        fecha_alta: (parent: any) => {
+        fecha_alta: (parent: Section) => {
             const date = new Date(parent.fecha_alta);
             return date.toLocaleString().replace(",", "");
         },
-        fecha_baja: (parent: any) => {
+        fecha_baja: (parent: Section) => {
             if (parent.fecha_baja) {
                 const date = new Date(parent.fecha_baja);
                 return date.toLocaleString().replace(",", "");

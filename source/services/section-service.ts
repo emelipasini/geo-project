@@ -2,6 +2,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 
 import Section from "../models/section.js";
+import Street from "../models/street.js";
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ export const addStreetsToSections = async (sections: Section[]) => {
         const { data: streets } = await axios.get(`${process.env.API_URL}/streets`);
 
         const sectionsWithStreets = sections.map((section: Section) => {
-            const street = streets.find((street: any) => street.id_via === section.id_via);
+            const street = streets.find((street: Street) => street.id_via === section.id_via);
             section.id_via = street!;
             return section;
         });

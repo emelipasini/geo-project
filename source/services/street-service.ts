@@ -18,7 +18,7 @@ export const getStreets = async (): Promise<Street[]> => {
 export const getActiveStreets = async () => {
     const streets = await getStreets();
     const streetsWithSections = await addSectionsToStreets(streets);
-    const activeStreetsWithSections = streetsWithSections.filter((street: any) => !street.fecha_baja);
+    const activeStreetsWithSections = streetsWithSections.filter((street: Street) => !street.fecha_baja);
     return activeStreetsWithSections;
 };
 
@@ -27,7 +27,7 @@ export const addSectionsToStreets = async (streets: Street[]) => {
         const { data: sections } = await axios.get(`${process.env.API_URL}/sections`);
 
         const streetsWithSections = streets.map((street: Street) => {
-            const streetSections = sections.filter((section: any) => section.id_via === street.id_via);
+            const streetSections = sections.filter((section: Street) => section.id_via === street.id_via);
             street.tramos = streetSections;
             return street;
         });
