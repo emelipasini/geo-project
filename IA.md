@@ -25,6 +25,10 @@ Lo uso para:
 Es una [herramienta](https://www.phind.com/) que corre ChatGPT por detras, esta conectada a Internet y te dice las fuentes de donde saca la informacion. Lo uso cuando ChatGPT no puede terminar de ayudarme ya que en mi experiencia ChatGPT sigue siendo superior.
 Una ventaja es que Phind no pide inicio de sesion para poder utilizarlo.
 
+### Deepl
+
+Es una [IA](https://www.deepl.com/translator) enfocada en traduccion de idiomas. La uso para traducir de Ingles a Español y viceversa. Ademas tiene una [opcion](https://www.deepl.com/write) para corregir o dar sugerencias de un texto que esta en Ingles. Incluso tiene una aplicacion de escritorio.
+
 ---
 
 ## Modo de uso
@@ -138,6 +142,16 @@ Cuando no recuerdo como se hace algo le pregunto a ChatGPT, aca dejo un ejemplo 
 [Link a ChatGPT](https://chat.openai.com/share/fd7b8271-0f0e-4d98-8343-3a719582f4da)
 
 ### Refactorizacion
+
+Tenia un codigo que no me convencia, estaba tratando de seguir el consejo de Clean Code sobre que una funcion deberia hacer una y solo una cosa, y el pasarle un booleano de parametro no es una buena practica pero era mucho codigo duplicado, entonces decidi ejecutar el "Make Robust" de Github Copilot Labs. El resultado no fue el que esperaba pero me agrego todos los try catch que faltaban en las funciones.
+
+![make-robust](./public/make-robust.png)
+
+Despues de eso le pedi ayuda a ChatGPT, dejo el link de la consulta [aca](https://chat.openai.com/share/ce22b776-3059-457b-a712-1d4c50d9da54).
+
+Despues se me ocurrio una forma mas prolija que es como quedo, el codigo se puede ver en `/services/section-service.ts`.
+
+Como el "Make Robust" funciono tan bien quise usarlo a lo largo de toda la aplicacion y me rompio la funcionalidad. Tambien quise usar el "Add Types" pero tampoco funciono como debia. Para este tipo de cosas me parece mucho mas eficiente ChatGPT porque ademas recordemos que Labs es una tecnologia que esta en beta.
 
 ### Explicacion de codigo
 
