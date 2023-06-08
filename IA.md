@@ -168,4 +168,10 @@ junto con el codigo que se quiera entender. Y si es necesario se repregunta sobr
 
 ### Documentacion
 
+Trate de usar "Document" the Labs y de nuevo no funciono como esperaba o al menos no era lo que yo queria. Me parece que agregar un comentario al codigo no suma para nada y ni siquiera me dejo documentar todo el archivo a la vez. Me parece que si necesito entender el codigo no voy a usar eso y para lo que yo pretendia usarlo era para entregarselo al cliente.
+
+![Foto de Labs](./public/document-code.PNG)
+
+Y decidi usar ChatGPT para ver si me daba algo mas util para el cliente, dejo el link a la [consulta](https://chat.openai.com/share/02b705d2-a6c0-4a82-91c2-b57d2afe2154) y el resultado se puede ver en la carpeta docs.
+
 ### Testing
