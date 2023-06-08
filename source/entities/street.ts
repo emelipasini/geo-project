@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-import { getActiveStreets, getStreets } from "../services/street-service.js";
+import { getActiveStreets, getStreets, saveNewStreet } from "../services/street-service.js";
 
 import Street from "../models/street.js";
 
@@ -11,12 +11,16 @@ export const typeDefs = gql`
         streets(deleted: DeletedStreets): [Street]
     }
 
+    extend type Mutation {
+        addStreet(nombre_oficial: String!): Street
+    }
+
     enum DeletedStreets {
         YES
     }
 
     type Street {
-        id_via: Int!
+        id_via: ID!
         nombre_oficial: String!
         fecha_alta: String!
         fecha_baja: String
@@ -44,6 +48,19 @@ export const resolvers = {
             }
 
             return streets;
+        },
+    },
+    Mutation: {
+        addStreet: async (_: Street, args: { nombre_oficial: string }) => {
+            const streets = await getStreets();
+
+            const streetAlreadyExists = streets.find((street: Street) => street.nombre_oficial === args.nombre_oficial);
+            if (streetAlreadyExists) {
+                return streetAlreadyExists;
+            }
+
+            const newStreet = await saveNewStreet(args.nombre_oficial);
+            return newStreet;
         },
     },
     Street: {

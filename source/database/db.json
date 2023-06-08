@@ -1,64 +1,88 @@
 {
     "streets": [
         {
+            "id": 9,
             "id_via": 9,
             "nombre_oficial": "ROMA",
             "fecha_alta": "2023-02-28T10:53:24.000Z",
             "fecha_baja": null
         },
         {
+            "id": 2432,
             "id_via": 2432,
             "nombre_oficial": "CALLAO AV",
             "fecha_alta": "2023-01-05T12:21:23.000Z",
             "fecha_baja": null
         },
         {
+            "id": 236,
             "id_via": 236,
             "nombre_oficial": "RIVADAVIA AV.",
             "fecha_alta": "2023-03-20T09:03:14.000Z",
             "fecha_baja": null
         },
         {
+            "id": 132,
             "id_via": 132,
             "nombre_oficial": "PARAGUAY",
             "fecha_alta": "2023-04-14T15:45:14.000Z",
             "fecha_baja": "2023-05-29T09:52:23.000Z"
         },
         {
+            "id": 573,
             "id_via": 573,
             "nombre_oficial": "LAPRIDA",
             "fecha_alta": "2023-02-25T17:24:32.000Z",
             "fecha_baja": null
         },
         {
+            "id": 812,
             "id_via": 812,
             "nombre_oficial": "JUNIN",
             "fecha_alta": "2023-06-03T13:05:42.000Z",
             "fecha_baja": null
         },
         {
+            "id": 933,
             "id_via": 933,
             "nombre_oficial": "SAN LUIS",
             "fecha_alta": "2023-03-11T11:32:21.000Z",
             "fecha_baja": null
         },
         {
+            "id": 1200,
             "id_via": 1200,
             "nombre_oficial": "25 DE MAYO",
             "fecha_alta": "2023-04-28T14:25:34.000Z",
             "fecha_baja": null
         },
         {
+            "id": 1217,
             "id_via": 1217,
             "nombre_oficial": "CASEROS AV.",
             "fecha_alta": "2023-06-02T10:30:10.000Z",
             "fecha_baja": null
         },
         {
+            "id": 2195,
             "id_via": 2195,
             "nombre_oficial": "CHUBUT",
             "fecha_alta": "2023-01-27T12:50:32.000Z",
             "fecha_baja": "2023-06-01T14:25:21.000Z"
+        },
+        {
+            "id_via": 2433,
+            "nombre_oficial": "YAPEYU",
+            "fecha_alta": "2023-06-08T18:04:06.602Z",
+            "fecha_baja": null,
+            "id": 2433
+        },
+        {
+            "id_via": 2434,
+            "nombre_oficial": "GUEMES",
+            "fecha_alta": "2023-06-08T18:22:15.853Z",
+            "fecha_baja": null,
+            "id": 2434
         }
     ],
     "sections": [

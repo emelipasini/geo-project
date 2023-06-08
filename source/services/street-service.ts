@@ -5,9 +5,18 @@ import Street from "../models/street.js";
 
 dotenv.config();
 
-export const getStreets = async (): Promise<Street[]> => {
+const fetchStreets = async (): Promise<Street[]> => {
     try {
         const { data: streets } = await axios.get(`${process.env.API_URL}/streets`);
+        return streets;
+    } catch (error) {
+        throw new Error("Error while fetching streets");
+    }
+};
+
+export const getStreets = async (): Promise<Street[]> => {
+    try {
+        const streets = await fetchStreets();
         const streetsWithSections = await addSectionsToStreets(streets);
         return streetsWithSections;
     } catch (error) {
@@ -38,16 +47,22 @@ export const addSectionsToStreets = async (streets: Street[]) => {
     }
 };
 
-export const saveNewStreet = async (street: Street): Promise<Street[]> => {
-    street.id_via = 3;
+export const saveNewStreet = async (name: string): Promise<Street> => {
+    try {
+        const streets = await fetchStreets();
 
-    const newStreet = {
-        id_via: street.id_via,
-        nombre_oficial: street.nombre_oficial,
-        fecha_alta: street.fecha_alta,
-        fecha_baja: street.fecha_baja,
-    };
+        const indexes = streets.map((street: Street) => street.id_via).sort((a, b) => b - a);
 
-    const { data: streets } = await axios.post(`${process.env.API_URL}/streets`, newStreet);
-    return streets;
+        const newStreet = {
+            id_via: indexes[0] + 1,
+            nombre_oficial: name,
+            fecha_alta: new Date(),
+            fecha_baja: null,
+        };
+
+        const { data: street } = await axios.post(`${process.env.API_URL}/streets`, newStreet);
+        return street;
+    } catch (error) {
+        throw new Error("Error while saving new street");
+    }
 };
