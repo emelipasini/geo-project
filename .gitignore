@@ -47,4 +47,4 @@ test-logs.json
 .vscode-test
 
 # Development directory
-development
+_development

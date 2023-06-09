@@ -1,5 +1,6 @@
 {
     "environment": "test",
     "apiUrl": "http://localhost:5000",
-    "logging": "source/database/tests/test-logs.json"
+    "logging": "source/database/tests/test-logs.json",
+    "database": "source/database/tests/test-db.json"
 }

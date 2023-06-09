@@ -2,16 +2,14 @@
 
 A TypeScript-based GraphQL server integrated with Apollo, utilizing a JSON server API for handling geographical data for learning purposes.
 
-Technologies: TypeScript, GraphQL, Node, Apollo, JSON server.
+Technologies: TypeScript, GraphQL, Node, Apollo, JSON server, Jest.
 Tools: VSCode, Git, GitHub Copilot, ChatGPT.
 
 ## Instalation and configuration
 
-Node.js is required to run this project, I'm using version 18.16.0. So far the .env file only has a localhost url so it's not necessary to configure anything.
+Node.js is required to run this project, I'm using version 18.16.0. So far the config files don't have sensitive info so it's not necessary to configure anything.
 
 ```bash
-cp _.env .env
-
 npm install
 npm run build
 ```
@@ -23,4 +21,13 @@ Keep in mind that the project has 2 servers that must run at the same time becau
 ```bash
 npm run json-server
 npm run start
+```
+
+## Running the tests
+
+Note that the tests need to run the Test API before they can be executed.
+
+```bash
+npm run test-server
+npm test
 ```

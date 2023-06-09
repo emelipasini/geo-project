@@ -20,6 +20,7 @@ export const typeDefs = gql`
     type Section {
         id: Int!
         street_id: Street
+        street_type: Int!
         initial_left: Int
         initial_right: Int
         end_left: Int
