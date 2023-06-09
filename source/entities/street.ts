@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-import { getActiveStreets, getStreets, saveNewStreet } from "../services/street-service.js";
+import { getActiveStreetsWithSections, getStreetsWithSections, saveNewStreet } from "../services/street-service.js";
 
 import Street from "../models/street.js";
 
@@ -32,20 +32,20 @@ export const typeDefs = gql`
 export const resolvers = {
     Query: {
         activeStreetsCount: async () => {
-            const streets = await getActiveStreets();
+            const streets = await getActiveStreetsWithSections();
             return streets.length;
         },
         street: async (_: Street, args: { id: number }) => {
-            const streets = await getStreets();
+            const streets = await getStreetsWithSections();
             return streets.find((street: Street) => street.id === args.id);
         },
         streets: async (_: Street, args: { deleted?: string }) => {
             let streets: Street[];
 
             if (args.deleted) {
-                streets = await getStreets();
+                streets = await getStreetsWithSections();
             } else {
-                streets = await getActiveStreets();
+                streets = await getActiveStreetsWithSections();
             }
 
             return streets;
@@ -53,7 +53,7 @@ export const resolvers = {
     },
     Mutation: {
         addStreet: async (_: Street, args: { name: string }) => {
-            const streets = await getStreets();
+            const streets = await getStreetsWithSections();
 
             const streetAlreadyExists = streets.find((street: Street) => street.name === args.name);
             if (streetAlreadyExists) {

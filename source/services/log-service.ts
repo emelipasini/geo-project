@@ -1,19 +1,20 @@
 import { resolve } from "path";
 import fs from "fs";
 
-import { Log, LogType } from "../models/log.js";
+import { Log, Entity, LogType } from "../models/log.js";
 
 const FILE_PATH = resolve("source/database/logs.json");
 
-export default function log(message: string, data: string, type: LogType = LogType.ERROR) {
-    const log = createLog(message, data, type);
+export default function log(message: string, data: string, entity: Entity, type: LogType = LogType.ERROR) {
+    const log = createLog(message, data, entity, type);
     saveLog(log);
 }
 
-function createLog(message: string, data: string, type: LogType) {
+function createLog(message: string, data: string, entity: Entity, type: LogType) {
     const newLog: Log = {
         id: getNextId(),
         type,
+        entity,
         message,
         data,
         date: new Date(),

@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-import { getActiveSections, getSections } from "../services/section-service.js";
+import { getActiveSectionsWithStreets, getSectionsWithStreets } from "../services/section-service.js";
 
 import Section from "../models/section.js";
 
@@ -35,15 +35,15 @@ export const typeDefs = gql`
 export const resolvers = {
     Query: {
         activeSectionsCount: async () => {
-            const sections = await getActiveSections();
+            const sections = await getActiveSectionsWithStreets();
             return sections.length;
         },
         section: async (_: Section, args: { id: number }) => {
-            const sections = await getSections();
+            const sections = await getSectionsWithStreets();
             return sections.find((section: Section) => section.id === args.id);
         },
         sectionsByStreet: async (_: Section, args: { street_id: number }) => {
-            const sections = await getSections();
+            const sections = await getSectionsWithStreets();
             return sections.filter(
                 (section: Section) => (section.street_id as unknown as Section).street_id === args.street_id
             );
@@ -52,9 +52,9 @@ export const resolvers = {
             let sections: Section[];
 
             if (args.deleted) {
-                sections = await getSections();
+                sections = await getSectionsWithStreets();
             } else {
-                sections = await getActiveSections();
+                sections = await getActiveSectionsWithStreets();
             }
 
             return sections;

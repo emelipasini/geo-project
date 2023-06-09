@@ -3,29 +3,50 @@ import dotenv from "dotenv";
 
 import Section from "../models/section.js";
 import Street from "../models/street.js";
+import { Entity } from "../models/log.js";
+
+import { fetchStreets } from "./street-service.js";
+import log from "./log-service.js";
 
 dotenv.config();
 
-export const getSections = async () => {
+const ENTITY = Entity.SECTION;
+
+export const getSectionsWithStreets = async () => {
     try {
-        const { data: sections } = await axios.get(`${process.env.API_URL}/sections`);
+        const sections = await fetchSections();
         const sectionsWithStreets = await addStreetsToSections(sections);
         return sectionsWithStreets;
-    } catch (error) {
+    } catch (error: any) {
+        log("Error while fetching sections", error.message, ENTITY);
         throw new Error("Error while fetching sections");
     }
 };
 
-export const getActiveSections = async () => {
-    const sections = await getSections();
-    const sectionsWithStreets = await addStreetsToSections(sections);
-    const activeSectionsWithStreets = sectionsWithStreets.filter((section: Section) => !section.deleted);
-    return activeSectionsWithStreets;
+export const getActiveSectionsWithStreets = async () => {
+    try {
+        const sections = await fetchSections();
+        const activeSections = sections.filter((section: Section) => !section.deleted);
+        const activeSectionsWithStreets = await addStreetsToSections(activeSections);
+        return activeSectionsWithStreets;
+    } catch (error: any) {
+        log("Error while fetching active sections", error.message, ENTITY);
+        throw new Error("Error while fetching active sections");
+    }
 };
 
-export const addStreetsToSections = async (sections: Section[]) => {
+export const fetchSections = async (): Promise<Section[]> => {
     try {
-        const { data: streets } = await axios.get(`${process.env.API_URL}/streets`);
+        const { data: sections } = await axios.get<Section[]>(`${process.env.API_URL}/sections`);
+        return sections;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+};
+
+const addStreetsToSections = async (sections: Section[]) => {
+    try {
+        const streets = await fetchStreets();
 
         const sectionsWithStreets = sections.map((section: Section) => {
             const street = streets.find((street: Street) => street.id === section.street_id);
@@ -34,7 +55,7 @@ export const addStreetsToSections = async (sections: Section[]) => {
         });
 
         return sectionsWithStreets;
-    } catch (error) {
-        throw new Error("Error while adding streets to sections");
+    } catch (error: any) {
+        throw new Error(error.message);
     }
 };
