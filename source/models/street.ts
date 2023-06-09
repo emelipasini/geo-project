@@ -1,11 +1,11 @@
 import Section from "./section";
 
 type Street = {
-    id_via: number;
-    nombre_oficial: string;
-    fecha_alta: Date;
-    fecha_baja: Date;
-    tramos?: Section[];
+    id: number;
+    name: string;
+    created: Date;
+    deleted: Date | null;
+    sections?: Section[];
 };
 
 export default Street;

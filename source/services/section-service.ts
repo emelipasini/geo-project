@@ -19,7 +19,7 @@ export const getSections = async () => {
 export const getActiveSections = async () => {
     const sections = await getSections();
     const sectionsWithStreets = await addStreetsToSections(sections);
-    const activeSectionsWithStreets = sectionsWithStreets.filter((section: Section) => !section.fecha_baja);
+    const activeSectionsWithStreets = sectionsWithStreets.filter((section: Section) => !section.deleted);
     return activeSectionsWithStreets;
 };
 
@@ -28,8 +28,8 @@ export const addStreetsToSections = async (sections: Section[]) => {
         const { data: streets } = await axios.get(`${process.env.API_URL}/streets`);
 
         const sectionsWithStreets = sections.map((section: Section) => {
-            const street = streets.find((street: Street) => street.id_via === section.id_via);
-            section.id_via = street!;
+            const street = streets.find((street: Street) => street.id === section.street_id);
+            section.street_id = street!;
             return section;
         });
 

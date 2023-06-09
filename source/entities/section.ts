@@ -7,27 +7,28 @@ import Section from "../models/section.js";
 export const typeDefs = gql`
     extend type Query {
         activeSectionsCount: Int!
-        section(id_tramo: Int!): Section
-        sectionsByStreet(id_via: Int!): [Section]
+        section(id: Int!): Section
+        sectionsByStreet(street_id: Int!): [Section]
         sections(deleted: DeletedSections): [Section]
     }
 
     enum DeletedSections {
         YES
+        NO
     }
 
     type Section {
-        id_tramo: Int!
-        id_via: Street
-        alt_izqini: Int
-        alt_derini: Int
-        alt_izqfin: Int
-        alt_derfin: Int
-        altura_derecha: String
-        altura_izquierda: String
-        geom: String!
-        fecha_alta: String!
-        fecha_baja: String
+        id: Int!
+        street_id: Street
+        initial_left: Int
+        initial_right: Int
+        end_left: Int
+        end_right: Int
+        right_range: String
+        left_range: String
+        geometry: String!
+        created: String!
+        deleted: String
     }
 `;
 
@@ -37,13 +38,15 @@ export const resolvers = {
             const sections = await getActiveSections();
             return sections.length;
         },
-        section: async (_: Section, args: { id_tramo: number }) => {
+        section: async (_: Section, args: { id: number }) => {
             const sections = await getSections();
-            return sections.find((section: Section) => section.id_tramo === args.id_tramo);
+            return sections.find((section: Section) => section.id === args.id);
         },
-        sectionsByStreet: async (_: Section, args: { id_via: number }) => {
+        sectionsByStreet: async (_: Section, args: { street_id: number }) => {
             const sections = await getSections();
-            return sections.filter((section: Section) => (section.id_via as unknown as Section).id_via === args.id_via);
+            return sections.filter(
+                (section: Section) => (section.street_id as unknown as Section).street_id === args.street_id
+            );
         },
         sections: async (_: Section, args: { deleted?: string }) => {
             let sections: Section[];
@@ -58,19 +61,19 @@ export const resolvers = {
         },
     },
     Section: {
-        altura_izquierda: (parent: Section) => {
-            return `${parent.alt_izqini} - ${parent.alt_izqfin}`;
+        left_range: (parent: Section) => {
+            return `${parent.initial_left} - ${parent.end_left}`;
         },
-        altura_derecha: (parent: Section) => {
-            return `${parent.alt_derini} - ${parent.alt_derfin}`;
+        right_range: (parent: Section) => {
+            return `${parent.initial_right} - ${parent.end_right}`;
         },
-        fecha_alta: (parent: Section) => {
-            const date = new Date(parent.fecha_alta);
+        created: (parent: Section) => {
+            const date = new Date(parent.created);
             return date.toLocaleString().replace(",", "");
         },
-        fecha_baja: (parent: Section) => {
-            if (parent.fecha_baja) {
-                const date = new Date(parent.fecha_baja);
+        deleted: (parent: Section) => {
+            if (parent.deleted) {
+                const date = new Date(parent.deleted);
                 return date.toLocaleString().replace(",", "");
             }
             return null;

@@ -7,24 +7,25 @@ import Street from "../models/street.js";
 export const typeDefs = gql`
     extend type Query {
         activeStreetsCount: Int!
-        street(id_via: Int!): Street
+        street(id: Int!): Street
         streets(deleted: DeletedStreets): [Street]
     }
 
     extend type Mutation {
-        addStreet(nombre_oficial: String!): Street
+        addStreet(name: String!): Street
     }
 
     enum DeletedStreets {
         YES
+        NO
     }
 
     type Street {
-        id_via: ID!
-        nombre_oficial: String!
-        fecha_alta: String!
-        fecha_baja: String
-        tramos: [Section]
+        id: ID!
+        name: String!
+        created: String!
+        deleted: String
+        sections: [Section]
     }
 `;
 
@@ -34,9 +35,9 @@ export const resolvers = {
             const streets = await getActiveStreets();
             return streets.length;
         },
-        street: async (_: Street, args: { id_via: number }) => {
+        street: async (_: Street, args: { id: number }) => {
             const streets = await getStreets();
-            return streets.find((street: Street) => street.id_via === args.id_via);
+            return streets.find((street: Street) => street.id === args.id);
         },
         streets: async (_: Street, args: { deleted?: string }) => {
             let streets: Street[];
@@ -51,26 +52,26 @@ export const resolvers = {
         },
     },
     Mutation: {
-        addStreet: async (_: Street, args: { nombre_oficial: string }) => {
+        addStreet: async (_: Street, args: { name: string }) => {
             const streets = await getStreets();
 
-            const streetAlreadyExists = streets.find((street: Street) => street.nombre_oficial === args.nombre_oficial);
+            const streetAlreadyExists = streets.find((street: Street) => street.name === args.name);
             if (streetAlreadyExists) {
                 return streetAlreadyExists;
             }
 
-            const newStreet = await saveNewStreet(args.nombre_oficial);
+            const newStreet = await saveNewStreet(args.name);
             return newStreet;
         },
     },
     Street: {
-        fecha_alta: (parent: Street) => {
-            const date = new Date(parent.fecha_alta);
+        created: (parent: Street) => {
+            const date = new Date(parent.created);
             return date.toLocaleString().replace(",", "");
         },
-        fecha_baja: (parent: Street) => {
-            if (parent.fecha_baja) {
-                const date = new Date(parent.fecha_baja);
+        deleted: (parent: Street) => {
+            if (parent.deleted) {
+                const date = new Date(parent.deleted);
                 return date.toLocaleString().replace(",", "");
             }
             return null;
