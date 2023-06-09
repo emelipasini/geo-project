@@ -1,9 +1,10 @@
 import { resolve } from "path";
+import config from "config";
 import fs from "fs";
 
 import { Log, Entity, LogType } from "../models/log.js";
 
-const FILE_PATH = resolve("source/database/logs.json");
+const FILE_PATH = resolve(config.get("logging"));
 
 export default function log(message: string, data: string, entity: Entity, type: LogType = LogType.ERROR) {
     const log = createLog(message, data, entity, type);

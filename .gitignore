@@ -37,12 +37,11 @@ node_modules/
 # Output of 'npm pack'
 *.tgz
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+# config environment variable files
+# As far as there is no sensitive data in the file I will not add it to the .gitignore
+
+# tests
+test-logs.json
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test

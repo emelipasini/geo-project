@@ -1,5 +1,5 @@
 import axios from "axios";
-import dotenv from "dotenv";
+import config from "config";
 
 import Street from "../models/street.js";
 import Section from "../models/section.js";
@@ -7,8 +7,6 @@ import { Entity } from "../models/log.js";
 
 import { fetchSections } from "./section-service.js";
 import log from "./log-service.js";
-
-dotenv.config();
 
 const ENTITY = Entity.STREET;
 
@@ -47,7 +45,7 @@ export const saveNewStreet = async (name: string): Promise<Street> => {
             fecha_baja: null,
         };
 
-        const { data: street } = await axios.post(`${process.env.API_URL}/streets`, newStreet);
+        const { data: street } = await axios.post(`${config.get("apiUrl")}/streets`, newStreet);
         return street;
     } catch (error: any) {
         log("Error while saving new street", error.message, ENTITY);
@@ -57,7 +55,7 @@ export const saveNewStreet = async (name: string): Promise<Street> => {
 
 export const fetchStreets = async (): Promise<Street[]> => {
     try {
-        const { data: streets } = await axios.get<Street[]>(`${process.env.API_URL}/streets`);
+        const { data: streets } = await axios.get<Street[]>(`${config.get("apiUrl")}/streets`);
         return streets;
     } catch (error: any) {
         throw new Error(error.message);

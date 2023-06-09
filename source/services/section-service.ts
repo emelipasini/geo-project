@@ -1,5 +1,5 @@
 import axios from "axios";
-import dotenv from "dotenv";
+import config from "config";
 
 import Section from "../models/section.js";
 import Street from "../models/street.js";
@@ -7,8 +7,6 @@ import { Entity } from "../models/log.js";
 
 import { fetchStreets } from "./street-service.js";
 import log from "./log-service.js";
-
-dotenv.config();
 
 const ENTITY = Entity.SECTION;
 
@@ -37,7 +35,7 @@ export const getActiveSectionsWithStreets = async () => {
 
 export const fetchSections = async (): Promise<Section[]> => {
     try {
-        const { data: sections } = await axios.get<Section[]>(`${process.env.API_URL}/sections`);
+        const { data: sections } = await axios.get<Section[]>(`${config.get("apiUrl")}/sections`);
         return sections;
     } catch (error: any) {
         throw new Error(error.message);
