@@ -10,6 +10,52 @@ import log from "./log-service.js";
 
 const ENTITY = Entity.SECTION;
 
+export const getSectionCount = async (): Promise<number> => {
+    try {
+        const sections = await fetchSections();
+        return sections.length;
+    } catch (error: any) {
+        log("Error while fetching section count", error.message, ENTITY);
+        throw new Error("Error while fetching section count");
+    }
+};
+
+export const getActiveSectionCount = async (): Promise<number> => {
+    try {
+        const sections = await fetchSections();
+        const activeSections = sections.filter((section: Section) => !section.deleted);
+        return activeSections.length;
+    } catch (error: any) {
+        log("Error while fetching active section count", error.message, ENTITY);
+        throw new Error("Error while fetching active section count");
+    }
+};
+
+export const findSectionById = async (id: number): Promise<Section | undefined> => {
+    try {
+        const sections = await fetchSections();
+        const section = sections.find((section: Section) => section.id === id);
+        if (section) {
+            const sectionWithStreets = await addStreetsToSections([section]);
+            return sectionWithStreets[0];
+        }
+    } catch (error: any) {
+        log("Error while fetching section by id", error.message, ENTITY);
+        throw new Error("Error while fetching section by id");
+    }
+};
+
+export const getSectionsByStreetId = async (streetId: number): Promise<Section[]> => {
+    try {
+        const sections = await fetchSections();
+        const sectionsByStreetId = sections.filter((section: Section) => section.street_id === streetId);
+        return sectionsByStreetId;
+    } catch (error: any) {
+        log("Error while fetching sections by street id", error.message, ENTITY);
+        throw new Error("Error while fetching sections by street id");
+    }
+};
+
 export const getSectionsWithStreets = async () => {
     try {
         const sections = await fetchSections();

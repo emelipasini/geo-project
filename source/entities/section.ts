@@ -1,11 +1,19 @@
 import gql from "graphql-tag";
 
-import { getActiveSectionsWithStreets, getSectionsWithStreets } from "../services/section-service.js";
+import {
+    getSectionCount,
+    getActiveSectionCount,
+    findSectionById,
+    getSectionsByStreetId,
+    getActiveSectionsWithStreets,
+    getSectionsWithStreets,
+} from "../services/section-service.js";
 
 import Section from "../models/section.js";
 
 export const typeDefs = gql`
     extend type Query {
+        sectionsCount: Int!
         activeSectionsCount: Int!
         section(id: Int!): Section
         sectionsByStreet(street_id: Int!): [Section]
@@ -35,19 +43,17 @@ export const typeDefs = gql`
 
 export const resolvers = {
     Query: {
+        sectionsCount: async () => {
+            return await getSectionCount();
+        },
         activeSectionsCount: async () => {
-            const sections = await getActiveSectionsWithStreets();
-            return sections.length;
+            return await getActiveSectionCount();
         },
         section: async (_: Section, args: { id: number }) => {
-            const sections = await getSectionsWithStreets();
-            return sections.find((section: Section) => section.id === args.id);
+            return await findSectionById(args.id);
         },
         sectionsByStreet: async (_: Section, args: { street_id: number }) => {
-            const sections = await getSectionsWithStreets();
-            return sections.filter(
-                (section: Section) => (section.street_id as unknown as Section).street_id === args.street_id
-            );
+            return await getSectionsByStreetId(args.street_id);
         },
         sections: async (_: Section, args: { deleted?: string }) => {
             let sections: Section[];
