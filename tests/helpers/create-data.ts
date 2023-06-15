@@ -13,6 +13,7 @@ export function createData() {
 
     const data = { streets, sections };
     fs.writeFileSync(resolve(config.get("database")), JSON.stringify(data));
+    return data;
 }
 
 function createStreets() {
@@ -22,8 +23,8 @@ function createStreets() {
         const street = {
             id: faker.number.int({ min: 1, max: 5000 }),
             name: faker.location.street(),
-            created: faker.date.past(),
-            deleted: i === 1 ? faker.date.recent() : null,
+            created: faker.date.past().toLocaleString() as unknown as Date,
+            deleted: i === 1 ? (faker.date.recent().toLocaleString() as unknown as Date) : null,
         };
         streets.push(street);
     }
@@ -35,17 +36,19 @@ function createSections(ids: number[]) {
     let sections: Section[] = [];
 
     for (let i = 0; i < ids.length; i++) {
+        const initial_left = faker.number.int({ min: 1, max: 5000 });
+
         const section = {
             id: faker.number.int({ min: 1, max: 5000 }),
             street_id: ids[i],
             street_type: faker.number.int({ min: 1, max: 16 }),
-            initial_left: faker.number.int({ min: 1, max: 5000 }),
-            initial_right: this.initial_left + 1,
-            end_left: this.initial_left + 100,
-            end_right: this.end_left + 100,
+            initial_left: initial_left,
+            initial_right: initial_left + 1,
+            end_left: initial_left + 100,
+            end_right: initial_left + 101,
             geometry: `LINESTRING (${faker.location.latitude()}, ${faker.location.longitude()})`,
-            created: faker.date.past(),
-            deleted: i === 1 ? faker.date.recent() : null,
+            created: faker.date.past().toLocaleString() as unknown as Date,
+            deleted: i === 1 ? (faker.date.recent().toLocaleString() as unknown as Date) : null,
         };
         sections.push(section);
     }

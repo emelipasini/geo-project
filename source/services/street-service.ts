@@ -78,10 +78,10 @@ export const saveNewStreet = async (name: string): Promise<Street> => {
 
         const indexes = streets.map((street: Street) => street.id).sort((a, b) => b - a);
         const newStreet = {
-            id_via: indexes[0] + 1,
-            nombre_oficial: name,
-            fecha_alta: new Date(),
-            fecha_baja: null,
+            id: indexes[0] + 1,
+            name: name,
+            created: new Date(),
+            deleted: null,
         };
 
         const { data: street } = await axios.post(`${config.get("apiUrl")}/streets`, newStreet);
