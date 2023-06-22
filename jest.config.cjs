@@ -10,4 +10,6 @@ module.exports = {
     transform: {
         "^(\\.{1,2}/.*)\\.js$": ["ts-jest"],
     },
+    globalSetup: "./tests/setup.ts",
+    globalTeardown: "./tests/teardown.ts",
 };

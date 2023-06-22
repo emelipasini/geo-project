@@ -1,7 +1,4 @@
 import { faker } from "@faker-js/faker";
-import config from "config";
-import { resolve } from "path";
-import fs from "fs";
 
 import Section from "../../source/models/section.js";
 import Street from "../../source/models/street.js";
@@ -11,9 +8,7 @@ export function createData() {
     const ids = streets.map((street: Street) => street.id);
     const sections = createSections(ids);
 
-    const data = { streets, sections };
-    fs.writeFileSync(resolve(config.get("database")), JSON.stringify(data));
-    return data;
+    return { streets, sections };
 }
 
 function createStreets() {

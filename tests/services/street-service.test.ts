@@ -1,5 +1,8 @@
 import { faker } from "@faker-js/faker";
 import assert from "assert";
+import config from "config";
+import { resolve } from "path";
+import fs from "fs";
 
 import Street from "../../source/models/street";
 import Section from "../../source/models/section";
@@ -14,18 +17,12 @@ import {
     saveNewStreet,
 } from "../../source/services/street-service";
 
-import { createData } from "../helpers/create-data";
-import { deleteData } from "../helpers/delete-data";
-
 describe("Street service test suit", () => {
     let data: { streets: Street[]; sections: Section[] };
 
-    beforeAll(() => {
-        data = createData();
-    });
-
-    afterAll(() => {
-        deleteData();
+    beforeAll(async () => {
+        const seedData = fs.readFileSync(resolve(config.get("database")), "utf-8");
+        data = JSON.parse(seedData);
     });
 
     it("should return all the streets", async () => {
@@ -75,6 +72,7 @@ describe("Street service test suit", () => {
     it("should return all the active streets with sections", async () => {
         const streets = data.streets;
         const sections = data.sections;
+
         const activeStreets = [streets[0], streets[2]];
         activeStreets[0].sections = [sections[0]];
         activeStreets[1].sections = [sections[2]];
