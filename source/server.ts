@@ -5,7 +5,7 @@ import { typeDefs, resolvers } from "./schema.js";
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
-startStandaloneServer(server, {
+void startStandaloneServer(server, {
     context: async ({ req }) => ({ token: req.headers.token }),
     listen: { port: 4000 },
 }).then(({ url }) => {

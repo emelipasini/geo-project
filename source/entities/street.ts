@@ -9,7 +9,7 @@ import {
     saveNewStreet,
 } from "../services/street-service.js";
 
-import Street from "../models/street.js";
+import type Street from "../models/street.js";
 
 export const typeDefs = gql`
     extend type Query {
@@ -51,7 +51,7 @@ export const resolvers = {
         streets: async (_: Street, args: { deleted?: string }) => {
             let streets: Street[];
 
-            if (args.deleted) {
+            if (args.deleted === "YES") {
                 streets = await getStreetsWithSections();
             } else {
                 streets = await getActiveStreetsWithSections();
@@ -72,7 +72,7 @@ export const resolvers = {
             return date.toLocaleString().replace(",", "");
         },
         deleted: (parent: Street) => {
-            if (parent.deleted) {
+            if (parent.deleted !== null) {
                 const date = new Date(parent.deleted);
                 return date.toLocaleString().replace(",", "");
             }

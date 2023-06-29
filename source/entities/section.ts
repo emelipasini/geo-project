@@ -9,7 +9,8 @@ import {
     getSectionsWithStreets,
 } from "../services/section-service.js";
 
-import Section from "../models/section.js";
+import type Section from "../models/section.js";
+import { replaceNumberForName } from "../models/street-types.js";
 
 export const typeDefs = gql`
     extend type Query {
@@ -28,7 +29,7 @@ export const typeDefs = gql`
     type Section {
         id: Int!
         street_id: Street
-        street_type: Int!
+        street_type: String
         initial_left: Int
         initial_right: Int
         end_left: Int
@@ -58,7 +59,7 @@ export const resolvers = {
         sections: async (_: Section, args: { deleted?: string }) => {
             let sections: Section[];
 
-            if (args.deleted) {
+            if (args.deleted === "YES") {
                 sections = await getSectionsWithStreets();
             } else {
                 sections = await getActiveSectionsWithStreets();
@@ -68,6 +69,9 @@ export const resolvers = {
         },
     },
     Section: {
+        street_type: (parent: Section) => {
+            return replaceNumberForName(parent.street_type);
+        },
         left_range: (parent: Section) => {
             return `${parent.initial_left} - ${parent.end_left}`;
         },
@@ -79,7 +83,7 @@ export const resolvers = {
             return date.toLocaleString().replace(",", "");
         },
         deleted: (parent: Section) => {
-            if (parent.deleted) {
+            if (parent.deleted !== null) {
                 const date = new Date(parent.deleted);
                 return date.toLocaleString().replace(",", "");
             }

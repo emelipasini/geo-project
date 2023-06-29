@@ -1,7 +1,7 @@
-import Section from "./section";
+import type Section from "./section";
 
 type Street = {
-    id: number;
+    readonly id: number;
     name: string;
     created: Date;
     deleted: Date | null;

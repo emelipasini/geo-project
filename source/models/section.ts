@@ -1,7 +1,7 @@
-import Street from "./street";
+import type Street from "./street";
 
 type Section = {
-    id: number;
+    readonly id: number;
     street_id?: number | Street;
     initial_left: number;
     initial_right: number;

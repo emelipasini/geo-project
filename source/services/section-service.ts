@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "config";
 
-import Section from "../models/section.js";
-import Street from "../models/street.js";
+import type Section from "../models/section.js";
+import type Street from "../models/street.js";
 import { Entity } from "../models/log.js";
 
 import { fetchStreets } from "./street-service.js";
@@ -23,7 +23,7 @@ export const getSectionCount = async (): Promise<number> => {
 export const getActiveSectionCount = async (): Promise<number> => {
     try {
         const sections = await fetchSections();
-        const activeSections = sections.filter((section: Section) => !section.deleted);
+        const activeSections = sections.filter((section: Section) => section.deleted === null);
         return activeSections.length;
     } catch (error: any) {
         log("Error while fetching active section count", error.message, ENTITY);
@@ -35,7 +35,7 @@ export const findSectionById = async (id: number): Promise<Section | undefined> 
     try {
         const sections = await fetchSections();
         const section = sections.find((section: Section) => section.id === id);
-        if (section) {
+        if (section !== undefined) {
             const sectionWithStreets = await addStreetsToSections([section]);
             return sectionWithStreets[0];
         }
@@ -56,7 +56,7 @@ export const getSectionsByStreetId = async (streetId: number): Promise<Section[]
     }
 };
 
-export const getSectionsWithStreets = async () => {
+export const getSectionsWithStreets = async (): Promise<Section[]> => {
     try {
         const sections = await fetchSections();
         const sectionsWithStreets = await addStreetsToSections(sections);
@@ -67,10 +67,10 @@ export const getSectionsWithStreets = async () => {
     }
 };
 
-export const getActiveSectionsWithStreets = async () => {
+export const getActiveSectionsWithStreets = async (): Promise<Section[]> => {
     try {
         const sections = await fetchSections();
-        const activeSections = sections.filter((section: Section) => !section.deleted);
+        const activeSections = sections.filter((section: Section) => section.deleted === null);
         const activeSectionsWithStreets = await addStreetsToSections(activeSections);
         return activeSectionsWithStreets;
     } catch (error: any) {
@@ -81,20 +81,22 @@ export const getActiveSectionsWithStreets = async () => {
 
 export const fetchSections = async (): Promise<Section[]> => {
     try {
-        const { data: sections } = await axios.get<Section[]>(`${config.get("apiUrl")}/sections`);
+        const url: string = config.get("apiUrl");
+        const { data: sections } = await axios.get<Section[]>(`${url}/sections`);
+
         return sections;
     } catch (error: any) {
         throw new Error(error.message);
     }
 };
 
-const addStreetsToSections = async (sections: Section[]) => {
+const addStreetsToSections = async (sections: Section[]): Promise<Section[]> => {
     try {
         const streets = await fetchStreets();
 
         const sectionsWithStreets = sections.map((section: Section) => {
             const street = streets.find((street: Street) => street.id === section.street_id);
-            section.street_id = street!;
+            if (street !== undefined) section.street_id = street;
             return section;
         });
 
